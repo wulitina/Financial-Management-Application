@@ -107,6 +107,9 @@ public class AccountServiceImpl implements AccountService {
         Account toAccount =   accountRepository.findById(transferFundDto.toAccountId())
                 .orElseThrow(()->new AccountException("To Account does not exist"));
 
+        if (fromAccount.getBalance()<transferFundDto.amount()){
+            throw new RuntimeException("Insufficient Amount");
+        }
         // debit the amount from fromAccount object
         fromAccount.setBalance(fromAccount.getBalance() - transferFundDto.amount());
 
