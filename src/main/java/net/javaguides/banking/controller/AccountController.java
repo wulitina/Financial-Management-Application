@@ -2,6 +2,7 @@ package net.javaguides.banking.controller;
 
 import lombok.AllArgsConstructor;
 import net.javaguides.banking.dto.AccountDto;
+import net.javaguides.banking.dto.TransactionDto;
 import net.javaguides.banking.dto.TransferFundDto;
 import net.javaguides.banking.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -69,6 +70,12 @@ public class AccountController {
     public ResponseEntity<String> transferFund(@RequestBody TransferFundDto transferFundDto){
         accountService.transferFunds(transferFundDto);
         return ResponseEntity.ok("Transfer Successfully");
+    }
+    // Build transactions REST API
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<TransactionDto>> fetchTransactions(@PathVariable("id") Long accountId){
+        List<TransactionDto> transactionDtos =  accountService.getAccountTransactions(accountId);
+        return ResponseEntity.ok(transactionDtos);
     }
 
 }
