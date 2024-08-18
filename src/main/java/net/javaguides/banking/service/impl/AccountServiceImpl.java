@@ -2,6 +2,7 @@ package net.javaguides.banking.service.impl;
 
 import net.javaguides.banking.dto.AccountDto;
 import net.javaguides.banking.entity.Account;
+import net.javaguides.banking.exception.AccountException;
 import net.javaguides.banking.mapper.AccountMapper;
 import net.javaguides.banking.repository.AccountRepository;
 import net.javaguides.banking.service.AccountService;
@@ -30,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto getAccountById(Long id) {
        Account account =  accountRepository.
                findById(id).
-               orElseThrow(()->new RuntimeException("Account does not exist"));
+               orElseThrow(()->new AccountException("Account does not exist"));
         return AccountMapper.mapToAccountDto(account);
     }
 
@@ -38,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto deposit(Long id, double amount) {
         Account account =  accountRepository.
                 findById(id).
-                orElseThrow(()->new RuntimeException("Account does not exist"));
+                orElseThrow(()->new AccountException("Account does not exist"));
         double newBalance = account.getBalance() + amount;
         account.setBalance(newBalance);
         Account savedAccount =  accountRepository.save(account);
@@ -49,9 +50,9 @@ public class AccountServiceImpl implements AccountService {
     public AccountDto withdraw(Long id, double amount) {
         Account account =  accountRepository.
                 findById(id).
-                orElseThrow(()->new RuntimeException("Account does not exist"));
+                orElseThrow(()->new AccountException("Account does not exist"));
         if (account.getBalance() < amount){
-            throw new RuntimeException("Insufficient amount");
+            throw new AccountException("Insufficient amount");
         }
 
         double newBalance = account.getBalance() - amount;
@@ -71,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(long id) {
         Account account =  accountRepository.
                 findById(id).
-                orElseThrow(()->new RuntimeException("Account does not exist"));
+                orElseThrow(()->new AccountException("Account does not exist"));
         accountRepository.deleteById(account.getId());
     }
 }

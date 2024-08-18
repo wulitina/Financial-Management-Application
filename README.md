@@ -2,6 +2,8 @@
 
 In the Banking Application Project,we will learn how to build REST APIs for the banking domain. The application supports creating bank accounts, fetching account details, making deposits and withdrawals, transferring funds between accounts, and viewing transaction histories.
 
+![img.png](pic-readme%2Fimg.png)
+
 # Detail
 - Developed REST APIs for a banking application, supporting the creation of bank accounts, fetching account details, making deposits and withdrawals, transferring funds between accounts, and viewing transaction histories.
 - Provides functionalities for creating and managing bank accounts. Implements functionalities for deposits, withdrawals, and fund transfers. Offers detailed transaction history retrieval for each account.
