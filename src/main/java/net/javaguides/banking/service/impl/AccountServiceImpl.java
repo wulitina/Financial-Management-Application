@@ -1,6 +1,7 @@
 package net.javaguides.banking.service.impl;
 
 import net.javaguides.banking.dto.AccountDto;
+import net.javaguides.banking.dto.TransferFundDto;
 import net.javaguides.banking.entity.Account;
 import net.javaguides.banking.exception.AccountException;
 import net.javaguides.banking.mapper.AccountMapper;
@@ -74,5 +75,23 @@ public class AccountServiceImpl implements AccountService {
                 findById(id).
                 orElseThrow(()->new AccountException("Account does not exist"));
         accountRepository.deleteById(account.getId());
+    }
+
+    @Override
+    public void transferFunds(TransferFundDto transferFundDto) {
+        // Retrieve the account from which we send te amount
+        Account fromAccount = accountRepository.findById(transferFundDto.fromAccountId())
+                .orElseThrow(()->new AccountException("From Account does not exist"));
+        // Retrieve the account to which we sent the amount
+        Account toAccount =   accountRepository.findById(transferFundDto.toAccountId())
+                .orElseThrow(()->new AccountException("To Account does not exist"));
+
+        // debit the amount from fromAccount object
+        fromAccount.setBalance(fromAccount.getBalance() - transferFundDto.amount());
+
+        // credit the amount to toAccount Object
+        toAccount.setBalance(toAccount.getBalance()+ transferFundDto.amount());
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
     }
 }
